@@ -51,7 +51,7 @@ class TodoList extends Component {
       console.log(err);
       return;
     }
-    this.ref = base.syncState(`User - ${this.state.uid}`, {
+    this.ref = base.syncState(`/users/${this.state.uid}`, {
       context: this,
       state: 'todos'
   });
