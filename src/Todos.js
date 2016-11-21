@@ -24,11 +24,11 @@ class Todos extends Component {
   }
   renderDisplay(){
     return(
-      <li>
+      <div>
         <span className="todo-item">{this.props.todo.title}</span>
         <Button onClick={this.deleteTodo}>X</Button>
         <Button onClick={this.edit}>Edit</Button>
-      </li>
+      </div>
     )
   }
   renderEdit(){
