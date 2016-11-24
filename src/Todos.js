@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap'
+import { Button, ButtonGroup } from 'react-bootstrap'
 class Todos extends Component {
   constructor(){
     super()
@@ -8,6 +8,7 @@ class Todos extends Component {
     this.update = this.update.bind(this)
     this.renderEdit = this.renderEdit.bind(this)
     this.renderDisplay = this.renderDisplay.bind(this)
+    this.complete = this.complete.bind(this)
     this.state = {
       editing: false
     }
@@ -18,6 +19,9 @@ class Todos extends Component {
   edit(){
     this.setState({editing: true})
   }
+  complete(){
+    this.props.completeTodo(this.props.todo.id)
+  }
   update(){
     this.props.updateTodo(this.props.todo.id, this.refs.newText.value)
     this.setState({editing: false})
@@ -25,18 +29,27 @@ class Todos extends Component {
   renderDisplay(){
     return(
       <div>
-        <span className="todo-item">{this.props.todo.title}</span>
-        <Button onClick={this.deleteTodo}>X</Button>
-        <Button onClick={this.edit}>Edit</Button>
+        <p className="todo-item">{this.props.todo.title}</p>
+        <ButtonGroup justified>
+          <ButtonGroup>
+            <Button onClick={this.complete}>Complete</Button>
+          </ButtonGroup>
+          <ButtonGroup>
+            <Button onClick={this.deleteTodo}>Delete</Button>
+          </ButtonGroup>
+          <ButtonGroup>
+            <Button onClick={this.edit}>Edit</Button>
+          </ButtonGroup>
+        </ButtonGroup>
       </div>
     )
   }
   renderEdit(){
     return (
-    <li>
+    <div>
       <input type="text" ref="newText" defaultValue={this.props.todo.title}/>
       <Button onClick={this.update}>Update</Button>
-    </li>
+    </div>
     )
   }
   render(){

@@ -22,12 +22,9 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+.todo-list{
+  background-color: grey;
+  width: 30vw;
+  max-width: 400px;
 
-.todo-item {
-  display: inline-block;
-  font-size: 20px;
-  margin-right: 5px;
-}
-li{
-  margin: 20px;
 }

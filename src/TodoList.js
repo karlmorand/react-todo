@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Todos from './Todos'
 import AddTodoForm from './AddTodoForm'
 import base from './base'
-import Dragula from 'react-dragula'
 
 
 class TodoList extends Component {
@@ -13,11 +12,12 @@ class TodoList extends Component {
     this.eachTodo = this.eachTodo.bind(this)
     this.renderTodoList = this.renderTodoList.bind(this)
     this.updateTodo = this.updateTodo.bind(this)
-    this.dragulaDecorator = this.dragulaDecorator.bind(this)
     this.renderLogin = this.renderLogin.bind(this)
     this.authenticate = this.authenticate.bind(this)
     this.authHandler = this.authHandler.bind(this)
     this.logout = this.logout.bind(this)
+    this.completeTodo = this.completeTodo.bind(this)
+    this.renderCompletedList = this.renderCompletedList.bind(this)
 
     this.state = {
       uid: null,
@@ -67,11 +67,17 @@ class TodoList extends Component {
     const todos = {...this.state.todos}
     todos[date] = todo
     todos[date].id = date
+    todos[date].done = false
     this.setState({todos})
   }
   updateTodo(key, newText){
     const todos = {...this.state.todos}
     todos[key].title = newText
+    this.setState({todos})
+  }
+  completeTodo(key){
+    const todos = {...this.state.todos}
+    todos[key].done = true;
     this.setState({todos})
   }
   removeTodo(key){
@@ -80,7 +86,9 @@ class TodoList extends Component {
     this.setState({todos})
   }
   eachTodo(key){
-    return <Todos updateTodo={this.updateTodo} key={key} removeTodo={this.removeTodo} todo={this.state.todos[key]}></Todos>
+    if (!this.state.todos[key].done) {
+        return <Todos updateTodo={this.updateTodo} completeTodo={this.completeTodo} key={key} removeTodo={this.removeTodo} todo={this.state.todos[key]}></Todos>
+    }
   }
 
   renderTodoList(){
@@ -92,26 +100,29 @@ class TodoList extends Component {
     return (<div>
             <AddTodoForm addTodo={this.addTodo}></AddTodoForm>
             {logout}
-            <div ref={this.dragulaDecorator} className='container'>
+            <div>
               {Object.keys(this.state.todos).map(key => this.eachTodo(key))}
             </div>
             {note}
           </div>)
   }
-  dragulaDecorator = (componentBackingInstance) => {
-    if (componentBackingInstance) {
-      let options = { };
-      Dragula([componentBackingInstance], options);
-    }
-  };
-
+  renderCompletedList(){
+    return(
+      <div>
+          <h2>Completed Todos</h2>
+          {Object.keys(this.state.todos).map(key => this.eachTodo(key))}
+      </div>
+    )
+  }
   render(){
     //check if not logged in
       if(!this.state.uid){
-
-        return <div>{this.renderLogin()}</div>
+        return this.renderLogin()
         }
-    return this.renderTodoList()
+    return <div>
+        {this.renderTodoList()}
+        {this.renderCompletedList()}
+      </div>
   }
 }
 
