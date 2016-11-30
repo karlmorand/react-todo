@@ -5,5 +5,6 @@ This is a simple todo-list I built while learning React. I plan to continue work
 **Tech used:**
 - React
 - ES6
+- Babel & Webpack
 - Firebase
 - Google Auth 
